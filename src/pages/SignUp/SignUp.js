@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Typography, Button, Dialog, DialogTitle } from '@material-ui/core';
-
+import { Link } from "react-router-dom";
 
 import MyForm from '../../components/MyForm/MyForm';
 import { signUp, authFail } from '../../redux/actions/auth';
@@ -36,15 +36,15 @@ class SignUp extends React.Component {
       return (
         <Page>
           <div className='flexbox col align-center justify-center'>
+
             <Typography align='center' variant='h3'>Account created please </Typography>
             <br />
-            <Button
-              href='/sign-in'
-              size='large'
-              variant='text'
-              color='secondary'>
-              <Typography align='center' variant='h3'>Login</Typography>              
-          </Button>
+            <Link to={'/sign-in'}>
+              <Button variant='text' color='secondary'>
+                <Typography align='center' variant='h3'>Login</Typography>
+              </Button>
+            </Link>
+
           </div>
         </Page>
       )
@@ -68,12 +68,9 @@ class SignUp extends React.Component {
     return (
       <MyForm userRequest={this.handleRequest} formType="Sign Up">
         <Typography align='center'> Have an account? </Typography>
-        <Button
-          href='/sign-in'
-          variant='text'
-          color='secondary'>
-          Login
-        </Button>
+        <Link to={'/sign-in'}>
+          <Button variant='text' color='secondary'>Login</Button>
+        </Link>
       </MyForm>
     )
   }

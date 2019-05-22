@@ -19,7 +19,6 @@ function App() {
   )
   return (
     <div>
-      hey
       {routes}
     </div>
   );

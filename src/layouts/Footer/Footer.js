@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from "react-router-dom";
+
 import { Typography, Button, withStyles } from '@material-ui/core';
 
 import './Footer.scss';
@@ -14,8 +16,15 @@ const Footer = (props) => {
   return (
     <div className="footer">
       <div>
-        <Button href='/sign-in' variant='contained' color='secondary' className={classes.margin}>Sign In</Button>
-        <Button href='/sign-up' variant='contained' color='secondary' className={classes.margin}>Sign Up</Button>
+
+        <Link to={'/sign-in'}>
+          <Button variant='contained' color='secondary' className={classes.margin}>Sign In</Button>
+        </Link>
+
+        <Link to={'/sign-up'}>
+          <Button variant='contained' color='secondary' className={classes.margin}>Sign Up</Button>
+        </Link>
+
       </div>
       <Typography align='right' color='secondary'> Made by Yaroslav Antonchyk </Typography>
     </div>

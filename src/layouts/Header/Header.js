@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 
@@ -40,8 +40,8 @@ class Header extends React.Component {
 
     let controlls = (
       <div>
-        <Button href='/sign-in' variant='contained' color='secondary' className={classes.margin}>Sign In</Button>
-        <Button href='/sign-up' variant='contained' color='secondary' className={classes.margin}>Sign Up</Button>
+        <Link to={'/sign-in'}><Button variant='contained' color='secondary' className={classes.margin}>Sign In</Button></Link>
+        <Link to={'/sign-up'}><Button variant='contained' color='secondary' className={classes.margin}>Sign Up</Button></Link>
       </div>
     )
 

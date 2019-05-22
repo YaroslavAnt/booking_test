@@ -2,6 +2,7 @@
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 
 import MyForm from '../../components/MyForm/MyForm';
 import { signIn, authFail } from '../../redux/actions/auth';
@@ -60,12 +61,9 @@ class Login extends React.Component {
     return (
       <MyForm userRequest={this.handleRequest} formType="Login">
         <Typography align='center'> Have no account?</Typography>
-        <Button
-          href='/sign-up'
-          variant='text'
-          color='secondary'>
-          Sign Up
-        </Button>
+        <Link to={'/sign-up'}>
+          <Button variant='text' color='secondary'>Sign Up </Button>
+        </Link>
       </MyForm>
     )
   }
