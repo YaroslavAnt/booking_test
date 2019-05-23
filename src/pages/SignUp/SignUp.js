@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Typography, Button, Dialog, DialogTitle } from '@material-ui/core';
 import { Link } from "react-router-dom";
 
-import MyForm from '../../components/MyForm/MyForm';
+import FormAuth from '../../components/FormAuth/FormAuth';
 import { signUp, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import '../../styles/index.scss'
@@ -66,12 +66,12 @@ class SignUp extends React.Component {
     }
 
     return (
-      <MyForm userRequest={this.handleRequest} formType="Sign Up">
+      <FormAuth userRequest={this.handleRequest} formType="Sign Up">
         <Typography align='center'> Have an account? </Typography>
         <Link to={'/sign-in'}>
           <Button variant='text' color='secondary'>Login</Button>
         </Link>
-      </MyForm>
+      </FormAuth>
     )
   }
 }

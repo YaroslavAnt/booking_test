@@ -22,6 +22,7 @@ export const postTicket = (hall) => {
       axios
         .post(url, hall, config)
         .then(() => {
+          console.log(hall)
           dispatch(getTickets());
         })
         .catch(err => {

@@ -1,10 +1,11 @@
 ﻿import React, { Component } from 'react';
 import moment from 'moment';
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { TextField, withStyles, IconButton } from '@material-ui/core';
+import { TextField, withStyles, Button } from '@material-ui/core';
 import { postTicket } from '../../redux/actions/tickets';
-import Delete from '@material-ui/icons/Delete';
+import Done from '@material-ui/icons/Done';
 
 
 const styles = theme => ({
@@ -29,19 +30,19 @@ const styles = theme => ({
 class FormBooking extends Component {
   state = {
     date: this.props.date,
-    start: '10:00',
-    end: '11:00',
+    start: `${this.props.hours}:00`,
+    end: `${this.props.hours + 1}:00`,
     title: '',
     open: false,
   }
 
   onChange = (e) => {
     const { name, value } = e.target;
-    const { newDate } = this.state;
+    const { date } = this.state;
 
-    if (name === "newStart") {
+    if (name === "start") {
       this.setState({
-        newEnd: moment(`${newDate}T${value}:00`).add(1, 'hours').format('HH:00')
+        end: moment(`${date}T${value}:00`).add(1, 'hours').format('HH:00')
       })
     }
 
@@ -50,14 +51,12 @@ class FormBooking extends Component {
     });
   }
 
-  onAdd = e => {
-    e.preventDefault();
+  onAdd = () => {
     const { date, start, end, title } = this.state;
 
     this.props.postTicket({
       hall_id: localStorage.getItem("currentHallId"),
       user_id: localStorage.getItem("userId"),
-
       from: new Date(date + 'T' + start).getTime() + 1,
       to: new Date(date + 'T' + end).getTime() - 1,
       title
@@ -65,8 +64,9 @@ class FormBooking extends Component {
   }
 
   render() {
-    const { classes, tickets, isAuthenticated, date, hallId } = this.props;
-    const { title, start, end, open } = this.state;
+    const { classes, date } = this.props;
+    const { title, start, end } = this.state;
+    const isAuthenticated = !!localStorage.getItem("token");
 
     return (
       <div className="flexbox col pd-20">
@@ -77,6 +77,20 @@ class FormBooking extends Component {
           name='title'
           value={title}
           className={classes.textField}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={this.onChange}
+        />
+
+        <TextField
+          id="date"
+          label="Book room for date"
+          type="date"
+          name='newDate'
+          value={date}
+          className={classes.textField}
+          inputProps={{ min: moment().format('YYYY-MM-DD') }}
           InputLabelProps={{
             shrink: true,
           }}
@@ -111,15 +125,21 @@ class FormBooking extends Component {
           onChange={this.onChange}
         />
 
-<IconButton
-              color='secondary'
-              onClick={() => null}
-              aria-label="Delete"
-            >
-              <Delete />
-            </IconButton>
-      </div>
 
+        {isAuthenticated ? (
+          <Button
+            color='secondary'
+            onClick={this.onAdd}
+            aria-label="Done"
+          >
+            <Done />
+          </Button>
+        ) : (
+            <Link to={'/sign-in'}>
+              <Button variant='text' color='secondary'>Sign in to book</Button>
+            </Link>
+          )}
+      </div>
     );
   }
 }

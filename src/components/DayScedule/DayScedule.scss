@@ -1,15 +1,35 @@
-﻿.day-scedule{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 250px;
+﻿.day-scedule-wrapper {
+
+    .day-scedule{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .marker {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 1px solid;
+    }
+
+    .marker-free {
+            background-color: #afa;
+    }
     
+    .marker-book {
+            background-color: #faa;
+    }
 }
 
 @media (min-width: 768px) {
-    .day-scedule{
-        flex-direction: row;
-        max-width: 1000px;
-        justify-content: center
+    .day-scedule-wrapper{
+
+        .day-scedule{
+            flex-direction: row;
+            max-width: 1000px;
+            justify-content: center
+        }
     }
 }

@@ -3,7 +3,7 @@
 import { Paper, TextField, withStyles, Button } from '@material-ui/core';
 
 import Page from '../../layouts/Page/Page';
-import './MyForm.scss'
+import './FormAuth.scss'
 
 const styles = () => ({
   login: {
@@ -27,7 +27,7 @@ const styles = () => ({
   }
 })
 
-class MyForm extends React.Component {
+class FormAuth extends React.Component {
   state = {
     email: '',
     password: '',
@@ -109,4 +109,4 @@ class MyForm extends React.Component {
 
 }
 
-export default withStyles(styles)(MyForm);
+export default withStyles(styles)(FormAuth);

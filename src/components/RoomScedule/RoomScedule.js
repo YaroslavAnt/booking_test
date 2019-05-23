@@ -1,12 +1,11 @@
 ﻿import React from 'react';
 import moment from 'moment';
-import { withStyles, TextField, Typography } from '@material-ui/core';
+import { withStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import './RoomScedule.scss';
 import DayScedule from '../DayScedule/DayScedule';
-import Wrapper from '../../layouts/Wrapper';
-import EditBar from '../EditBar/EditBar';
+
 import Calendar from '../MyCalendar/MyCalendar';
 
 const styles = theme => ({
@@ -48,63 +47,21 @@ class RoomScedule extends React.Component {
     this.setState({
       date
     });
-    console.log(this.state)
   }
 
   render() {
-    const { date, start, end } = this.state;
-    const isAuthenticated = !!localStorage.getItem('token');
-    console.log(this.props)
+    const { date } = this.state;
 
     return (
       <div>
         <form className="roomscedule" noValidate onSubmit={this.onAdd}>
           <div className="picker-container">
-            <Calendar
-              onChangeDay={(date) => this.onChangeDay(date)}
-            />
-
-            {isAuthenticated && (
-              <Wrapper>
-                <TextField
-                  id="time"
-                  label="Start event"
-                  type="time"
-                  name="start"
-                  value={start}
-                  className='textfield'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputProps={{ min: "10:00", max: "17:00", step: "1" }}
-                  onChange={this.onChangeTime}
-                />
-                <TextField
-                  id="time"
-                  label="End event"
-                  type="time"
-                  name='end'
-                  value={end}
-                  className='textfield'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputProps={{ min: moment(`${date}T${start}:00`).add(1, 'hours').format('HH:00'), max: "18:00", step: "1" }}
-                  onChange={this.onChangeTime}
-                />
-              </Wrapper>)
-            }
+            <Calendar onChangeDay={(date) => this.onChangeDay(date)} />
           </div>
 
-          <EditBar
-            date={date}
-            start={start}
-            end={end}
-            isAuthenticated={isAuthenticated}
-            {...this.props}
-          />
-
           <Typography variant='h4' align='center'>Scedule for {date}</Typography>
+
+          <Typography variant='subtitle1' align='center'>Click cell for more info</Typography>
 
           <DayScedule currentDate={this.state} {...this.props} />
 

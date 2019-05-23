@@ -1,50 +1,59 @@
 ﻿import React from 'react';
 import moment from 'moment';
+import { Typography, Dialog } from '@material-ui/core';
 
 import './DaySceduleCell.scss';
-import Wrapper from '../../layouts/Wrapper'
-import { Typography, IconButton } from '@material-ui/core';
-import Cached from '@material-ui/icons/Cached';
-import Delete from '@material-ui/icons/Delete';
+import FormBooking from '../FormBooking/FormBooking';
+import FormCorrect from '../FormCorrect/FormCorrect';
 
 
-const DaySceduleCell = (props) => {
-  // const currentRoom = sessionStorage.getItem("currentRoom")
-  // const { items } = JSON.parse(localStorage.getItem("data" + currentRoom)) || { items: [] };
-  const { hours, currentDate, tickets, hallId } = props;
-  const { date } = currentDate;
-  const userId = localStorage.getItem("userId");
-  const hallTickets = tickets.filter(ticket => ticket.hall_id === hallId);
-  const usertickets = hallTickets.filter(ticket => ticket.user_id === userId);
-  const isBookedTime = hallTickets.find(ticket => moment(date + 'T' + hours + ':01').isBetween(ticket.from, ticket.to, 'millisecond'));
-  const isMineBooking = usertickets.find(ticket => moment(date + 'T' + hours + ':01').isBetween(ticket.from, ticket.to, 'millisecond'));
+class DaySceduleCell extends React.Component {
+  state = {
+    open: false,
+  }
 
-  return (
-    <div className="cell">
-      <div className="hours">{hours}:00- {hours + 1}:00</div>
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
 
-      <div className={`mark ${isBookedTime ? 'booked' : 'free'} `} onClick={() => console.log('*****')}>
-        {isMineBooking && (
-          <Wrapper>
-            <IconButton
-              onClick={() => null}
-              aria-label="Correct"
-            >
-              <Cached />
-            </IconButton>
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
-            <IconButton
-              color='secondary'
-              onClick={() => null}
-              aria-label="Delete"
-            >
-              <Delete />
-            </IconButton>
-          </Wrapper>
-        )}
-      </div>     
-    </div>
-  );
+  render() {
+    // const currentRoom = sessionStorage.getItem("currentRoom")
+    // const { items } = JSON.parse(localStorage.getItem("data" + currentRoom)) || { items: [] };
+    const { hours, currentDate, tickets, hallId } = this.props;
+    const { date } = currentDate;
+    const userId = localStorage.getItem("userId");
+    const hallTickets = tickets.filter(ticket => ticket.hall_id === hallId);
+    const usertickets = hallTickets.filter(ticket => ticket.user_id === userId);
+    const isBookedTime = hallTickets.find(ticket => moment(date + 'T' + hours + ':01').isBetween(ticket.from, ticket.to, 'millisecond'));
+    const isMineBooking = usertickets.find(ticket => moment(date + 'T' + hours + ':01').isBetween(ticket.from, ticket.to, 'millisecond'));
+
+    return (
+      <div className="cell">
+        <div className="hours">{hours}:00- {hours + 1}:00</div>
+
+        <div className={`mark ${isBookedTime ? 'booked' : 'free'} `} onClick={this.handleOpen}>
+          {isMineBooking && (
+            <Typography>*</Typography>
+          )}
+        </div>
+
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          {isBookedTime ? (
+            <FormCorrect date={date} hours={hours} isMineBooking={isMineBooking} isBookedTime={isBookedTime} />
+          ) : (
+              <FormBooking date={date} hours={hours} />
+            )}
+        </Dialog>
+      </div>
+    );
+  }
 }
 
 

@@ -2,7 +2,11 @@
 import moment from 'moment';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { TextField, withStyles } from '@material-ui/core';
+import { TextField, withStyles, Card, CardHeader, Avatar, CardContent, Typography, CardActions, IconButton, Collapse, Button } from '@material-ui/core';
+import Cached from '@material-ui/icons/Cached';
+import Delete from '@material-ui/icons/Delete';
+import Done from '@material-ui/icons/Done';
+import { putTicket, deleteTickets } from '../../redux/actions/tickets';
 
 const styles = theme => ({
   root: {
@@ -20,25 +24,28 @@ const styles = theme => ({
   },
   textField: {
     color: 'red'
-  }
+  },
+  avatar: {
+    backgroundColor: '#C51161',
+  },
 });
 
-class FormBooking extends Component {
+class FormCorrect extends Component {
   state = {
     date: this.props.date,
-    start: '10:00',
-    end: '11:00',
+    start: `${this.props.hours}:00`,
+    end: `${this.props.hours + 1}:00`,
     title: '',
-    open: false,
+    expanded: false
   }
 
   onChange = (e) => {
     const { name, value } = e.target;
-    const { newDate } = this.state;
+    const { date } = this.state;
 
-    if (name === "newStart") {
+    if (name === "start") {
       this.setState({
-        newEnd: moment(`${newDate}T${value}:00`).add(1, 'hours').format('HH:00')
+        end: moment(`${date}T${value}:00`).add(1, 'hours').format('HH:00')
       })
     }
 
@@ -49,105 +56,149 @@ class FormBooking extends Component {
     sessionStorage.setItem([name], value);
   }
 
-  onAdd = e => {
-    e.preventDefault();
-    const { date, start, end } = this.props;
-
-    this.props.postTicket({
-      hall_id: localStorage.getItem("currentHallId"),
-
-      user_id: localStorage.getItem("userId"),
-      from: new Date(date + 'T' + start).getTime() + 1,
-      to: new Date(date + 'T' + end).getTime() - 1,
-      title: 'AAAAAA'
-    });
-  }
-
   onCorrect = e => {
-    e.preventDefault();
-    const { tickets, correctTicket, date, start } = this.props;
-    const { newDate, newStart, newEnd } = this.state;
-    let ticketId = null;
-
-    tickets.forEach(ticket => {
-      if (moment(`${date}T${start}:55`).isBetween(ticket.from, ticket.to, 'millisecond')) {
-        ticketId = ticket._id
-      }
-    });
+    const { correctTicket, hallId, isMineBooking } = this.props;
+    const { date, start, end } = this.state;
 
     correctTicket({
-      hall_id: localStorage.getItem("currentHallId"),
+      hall_id: hallId,
       user_id: localStorage.getItem("userId"),
-      from: new Date(`${newDate}T${newStart}`).getTime() + 1,
-      to: new Date(`${newDate}T${newEnd}`).getTime() - 1,
-    }, ticketId);
-
-    this.setState({ open: false });
+      from: new Date(`${date}T${start}`).getTime() + 1,
+      to: new Date(`${date}T${end}`).getTime() - 1,
+    }, isMineBooking._id);
   }
 
   onDelete = e => {
-    e.preventDefault();
-    const { tickets, deleteTicket, date, start } = this.props;
-    let ticketId = null;
-
-    tickets.forEach(ticket => {
-      if (moment(`${date}T${start}:55`).isBetween(ticket.from, ticket.to, 'millisecond')) {
-        ticketId = ticket._id
-      }
-    });
-
-    deleteTicket(ticketId);
+    const { deleteTicket, isMineBooking } = this.props;
+    deleteTicket(isMineBooking._id);
   }
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
 
 
   render() {
-    const { classes, tickets, isAuthenticated, date, hallId } = this.props;
-    const { title, start, end, open } = this.state;
+    const { classes, isMineBooking, isBookedTime } = this.props;
+    const { title, start, end, date } = this.state;
+    const isAuthenticated = !!localStorage.getItem("token");
 
     return (
-      <div className="flexbox col pd-20">
-        <TextField
-          id="title"
-          label="Title"
-          type="text"
-          name='title'
-          value={title}
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={this.onChange}
+      <Card className={classes.card}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="Info" className={classes.avatar}>
+              I
+            </Avatar>
+          }
+          title="About ticket"
         />
 
-        <TextField
-          id="time"
-          label="Start event"
-          type="time"
-          name="start"
-          value={start}
-          className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{ min: "10:00", max: "18:00", step: "1" }}
-          onChange={this.onChange}
-        />
+        <CardContent>
+          <Typography component="p" variant='subtitle1'>
+            Title: {isBookedTime.title}
+          </Typography>
 
-        <TextField
-          id="time"
-          label="End event"
-          type="time"
-          name='end'
-          value={end}
-          className={`${classes.textField} ${classes.marginBottom}`}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{ min: start, max: "18:00", step: "1" }}
-          onChange={this.onChange}
-        />
-      </div>
+          <Typography component="p" variant='subtitle1'>
+            From: {moment(isBookedTime.from).format('DD-MM-YYYY HH:mm')}
+          </Typography>
 
+          <Typography component="p" variant='subtitle1'>
+            To: {moment(isBookedTime.to).format('DD-MM-YYYY HH:mm')}
+          </Typography>
+        </CardContent>
+
+        <CardActions className={classes.actions} disableActionSpacing>
+          <IconButton
+            className={classes.expand}
+            onClick={this.handleExpandClick}
+            aria-expanded={this.state.expanded}
+            disabled={!(isAuthenticated && isMineBooking)}
+            color='secondary'
+            aria-label="Correct ticket"
+          >
+            <Cached />
+          </IconButton>
+
+          <IconButton
+            color='secondary'
+            onClick={this.onDelete}
+            disabled={!(isAuthenticated && isMineBooking)}
+            aria-label="Correct ticket">
+            <Delete />
+          </IconButton>
+        </CardActions>
+
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <div className="flexbox col">
+              <TextField
+                id="title"
+                label="Title"
+                type="text"
+                name='title'
+                value={title}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={this.onChange}
+              />
+
+              <TextField
+                id="date"
+                label="Book room for new date"
+                type="date"
+                name='date'
+                value={date}
+                className={classes.textField}
+                inputProps={{ min: moment().format('YYYY-MM-DD') }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={this.onChange}
+              />
+
+              <TextField
+                id="time"
+                label="Start event"
+                type="time"
+                name="start"
+                value={start}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{ min: "10:00", max: "18:00", step: "1" }}
+                onChange={this.onChange}
+              />
+
+              <TextField
+                id="time"
+                label="End event"
+                type="time"
+                name='end'
+                value={end}
+                className={`${classes.textField} ${classes.marginBottom}`}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{ min: start, max: "18:00", step: "1" }}
+                onChange={this.onChange}
+              />
+
+              <Button
+                color='secondary'
+                aria-label="Correct ticket"
+                onClick={this.onCorrect}
+              >
+                <Done />
+              </Button>
+            </div>
+
+          </CardContent>
+        </Collapse>
+      </Card>
     );
   }
 }
@@ -160,13 +211,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    postTicket: (user) => dispatch(postTicket(user)),
     correctTicket: (user, ticketId) => dispatch(putTicket(user, ticketId)),
     deleteTicket: (ticketId) => dispatch(deleteTickets(ticketId)),
   };
 };
 
-FormBooking.propTypes = {
+FormCorrect.propTypes = {
   classes: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
   date: PropTypes.string,
@@ -181,4 +231,4 @@ FormBooking.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(FormBooking));
+)(withStyles(styles)(FormCorrect));

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
-import MyForm from '../../components/MyForm/MyForm';
+import FormAuth from '../../components/FormAuth/FormAuth';
 import { signIn, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import { Dialog, DialogTitle, Typography, Button } from '@material-ui/core';
@@ -44,8 +44,6 @@ class Login extends React.Component {
     }
 
     if (err) {
-      console.log(err);
-
       return (
         <Page>
           <Dialog
@@ -59,12 +57,12 @@ class Login extends React.Component {
     }
 
     return (
-      <MyForm userRequest={this.handleRequest} formType="Login">
+      <FormAuth userRequest={this.handleRequest} formType="Login">
         <Typography align='center'> Have no account?</Typography>
         <Link to={'/sign-up'}>
           <Button variant='text' color='secondary'>Sign Up </Button>
         </Link>
-      </MyForm>
+      </FormAuth>
     )
   }
 }

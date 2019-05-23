@@ -2,6 +2,7 @@
 import { connect } from "react-redux";
 import { Paper, Typography, withStyles, Avatar, Dialog, DialogTitle } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { Redirect } from "react-router-dom";
 
 import Page from '../../layouts/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
@@ -45,7 +46,6 @@ class Hall extends React.Component {
 
   componentDidMount() {
     this.props.getTickets();
-    console.log(this.props.halls)
   }
 
   render() {
@@ -79,6 +79,10 @@ class Hall extends React.Component {
           </Dialog>
         </Page>
       )
+    }
+
+    if (!hall) {
+      return <Redirect exact to='/' />
     }
 
     return (
