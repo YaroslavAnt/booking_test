@@ -20,7 +20,7 @@ const DayScedule = (props) => (
         </div>
 
         <div className="flexbox align-center mb-20 ">
-            <span>*</span><Typography variant='subtitle1'> - your booking</Typography>
+            <span className='mr-20'>*</span><Typography variant='subtitle1'> - your booking</Typography>
         </div>
     </div>
 );

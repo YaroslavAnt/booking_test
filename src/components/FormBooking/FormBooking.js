@@ -29,7 +29,7 @@ const styles = theme => ({
 
 class FormBooking extends Component {
   state = {
-    date: this.props.date,
+    date: `${this.props.date}`,
     start: `${this.props.hours}:00`,
     end: `${this.props.hours + 1}:00`,
     title: '',
@@ -64,14 +64,16 @@ class FormBooking extends Component {
   }
 
   render() {
-    const { classes, date } = this.props;
-    const { title, start, end } = this.state;
+    const { classes } = this.props;
+    const { date, title, start, end } = this.state;
     const isAuthenticated = !!localStorage.getItem("token");
 
     return (
       <div className="flexbox col pd-20">
         <TextField
           id="title"
+          placeholder='Your event'
+          required={true}
           label="Title"
           type="text"
           name='title'
@@ -87,7 +89,7 @@ class FormBooking extends Component {
           id="date"
           label="Book room for date"
           type="date"
-          name='newDate'
+          name='date'
           value={date}
           className={classes.textField}
           inputProps={{ min: moment().format('YYYY-MM-DD') }}
@@ -129,6 +131,7 @@ class FormBooking extends Component {
         {isAuthenticated ? (
           <Button
             color='secondary'
+            disabled={title.length === 0}
             onClick={this.onAdd}
             aria-label="Done"
           >
@@ -158,13 +161,10 @@ const mapDispatchToProps = dispatch => {
 
 FormBooking.propTypes = {
   classes: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
   date: PropTypes.string,
   start: PropTypes.string,
   tickets: PropTypes.array.isRequired,
   postTicket: PropTypes.func.isRequired,
-  correctTicket: PropTypes.func.isRequired,
-  deleteTicket: PropTypes.func.isRequired,
 }
 
 

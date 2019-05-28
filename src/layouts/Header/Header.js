@@ -61,7 +61,6 @@ class Header extends React.Component {
             onClose={this.handleClose}
             message={
               <Button
-                href='/'
                 onClick={this.props.onLogOut}
                 variant='contained'
                 color='secondary'

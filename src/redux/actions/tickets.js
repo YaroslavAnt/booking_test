@@ -1,8 +1,8 @@
 ﻿import * as actionTypes from './actionTypes'
 import axios from "axios";
 
-const url = 'http://ec2-35-175-143-145.compute-1.amazonaws.com:4000/tickets';
-const putUrl = 'http://ec2-35-175-143-145.compute-1.amazonaws.com:4000/ticket';
+const url = 'https://web-ninjas.net/tickets';
+const putUrl = 'https://web-ninjas.net/ticket';
 const config = {
   headers: {
     'Authorization': localStorage.getItem("token")
@@ -22,11 +22,9 @@ export const postTicket = (hall) => {
       axios
         .post(url, hall, config)
         .then(() => {
-          console.log(hall)
           dispatch(getTickets());
         })
         .catch(err => {
-          console.log(err)
           dispatch(getTicketsFail(err.message));
         });
     }

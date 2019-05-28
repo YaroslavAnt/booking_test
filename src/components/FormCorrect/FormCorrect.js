@@ -2,7 +2,7 @@
 import moment from 'moment';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { TextField, withStyles, Card, CardHeader, Avatar, CardContent, Typography, CardActions, IconButton, Collapse, Button } from '@material-ui/core';
+import { TextField, withStyles, Card, CardHeader, Avatar, CardContent, Typography, IconButton, Collapse, Button } from '@material-ui/core';
 import Cached from '@material-ui/icons/Cached';
 import Delete from '@material-ui/icons/Delete';
 import Done from '@material-ui/icons/Done';
@@ -77,7 +77,6 @@ class FormCorrect extends Component {
     this.setState(state => ({ expanded: !state.expanded }));
   };
 
-
   render() {
     const { classes, isMineBooking, isBookedTime } = this.props;
     const { title, start, end, date } = this.state;
@@ -106,9 +105,7 @@ class FormCorrect extends Component {
           <Typography component="p" variant='subtitle1'>
             To: {moment(isBookedTime.to).format('DD-MM-YYYY HH:mm')}
           </Typography>
-        </CardContent>
 
-        <CardActions className={classes.actions} disableActionSpacing>
           <IconButton
             className={classes.expand}
             onClick={this.handleExpandClick}
@@ -127,12 +124,14 @@ class FormCorrect extends Component {
             aria-label="Correct ticket">
             <Delete />
           </IconButton>
-        </CardActions>
+        </CardContent>
 
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <div className="flexbox col">
               <TextField
+                required={true}
+                placeholder='Your event'
                 id="title"
                 label="Title"
                 type="text"
@@ -189,6 +188,7 @@ class FormCorrect extends Component {
 
               <Button
                 color='secondary'
+                disabled={title.length === 0}
                 aria-label="Correct ticket"
                 onClick={this.onCorrect}
               >
@@ -218,11 +218,9 @@ const mapDispatchToProps = dispatch => {
 
 FormCorrect.propTypes = {
   classes: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
   date: PropTypes.string,
   start: PropTypes.string,
   tickets: PropTypes.array.isRequired,
-  postTicket: PropTypes.func.isRequired,
   correctTicket: PropTypes.func.isRequired,
   deleteTicket: PropTypes.func.isRequired,
 }

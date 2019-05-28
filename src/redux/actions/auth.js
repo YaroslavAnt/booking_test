@@ -1,7 +1,7 @@
 ﻿import * as actionTypes from './actionTypes'
 import axios from "axios";
 
-const url = 'http://ec2-35-175-143-145.compute-1.amazonaws.com:4000';
+const url = 'https://web-ninjas.net';
 
 export const signUp = (email, password) => {
   return dispatch => {
