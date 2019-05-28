@@ -42,7 +42,6 @@ class FormAuth extends React.Component {
   checkValid = () => {
     const { email } = this.state;
     const regExp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    console.log(regExp.test(email));
     this.setState({
       isVaild: regExp.test(email)
     })

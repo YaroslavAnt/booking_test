@@ -60,13 +60,15 @@ class Header extends React.Component {
             open={this.state.open}
             onClose={this.handleClose}
             message={
-              <Button
-                onClick={this.props.onLogOut}
-                variant='contained'
-                color='secondary'
-              >
-                LogOut
-            </Button>
+              <Link to='/'>
+                <Button
+                  onClick={this.props.onLogOut}
+                  variant='contained'
+                  color='secondary'
+                >
+                  LogOut
+                </Button>
+              </Link>
             } />
         </div>
       )

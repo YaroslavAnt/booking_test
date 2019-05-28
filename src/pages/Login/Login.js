@@ -30,8 +30,6 @@ class Login extends React.Component {
     localStorage.setItem("email", email);
 
     this.props.onSubmit(user);
-    console.log(user);
-
   }
 
   render() {
