@@ -11,6 +11,7 @@ import Room1ListItem from '../../components/RoomListItem/Room1ListItem';
 import './Dashboard.scss'
 import { loadHalls } from '../../redux/actions/halls';
 import Spinner from '../../components/Spinner/Spinner';
+import { getTickets } from '../../redux/actions/tickets';
 
 class Dashboard extends React.Component {
   state = {
@@ -26,7 +27,8 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    this.props.onLoad();
+    this.props.loadHalls();
+    this.props.loadTickets();
   }
 
   render() {
@@ -80,7 +82,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoad: () => dispatch(loadHalls()),
+    loadHalls: () => dispatch(loadHalls()),
+    loadTickets: () => dispatch(getTickets()),
   };
 };
 
@@ -88,7 +91,8 @@ Dashboard.propTypes = {
   halls: PropTypes.array.isRequired,
   err: PropTypes.string,
   isLoading: PropTypes.bool.isRequired,
-  onLoad: PropTypes.func.isRequired,
+  loadHalls: PropTypes.func.isRequired,
+  loadTickets: PropTypes.func.isRequired,
 }
 
 export default connect(

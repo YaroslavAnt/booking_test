@@ -7,6 +7,7 @@ import Login from './pages/Login/Login';
 import Dashboard from './pages/Dashboard/Dashboard';
 import SignUp from './pages/SignUp/SignUp';
 import Hall from './pages/Hall/Hall';
+import Statistics from './pages/Statistics/Statistics';
 
 function App() {
   let routes = (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/sign-up" component={SignUp} />
       <Route path="/sign-in" component={Login} />
       <Route path="/hall/:hall_id" component={Hall} />
+      <Route path="/statistics" component={Statistics} />
     </Switch>
   )
   return (
