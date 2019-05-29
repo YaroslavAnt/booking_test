@@ -13,4 +13,6 @@ export const GET_TICKETS_INIT = "GET_TICKETS_INIT";
 export const GET_TICKETS_SUCCESS = "GET_TICKETS_SUCCESS";
 export const GET_TICKETS_FAIL = "GET_TICKETS_FAIL";
 
-export const ERR_CONFIRM = "ERR_CONFIRM"
+export const ERR_CONFIRM = "ERR_CONFIRM";
+
+export const FORM_CHANGE = "FORM_CHANGE";

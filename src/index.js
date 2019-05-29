@@ -5,6 +5,8 @@ import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import thunk from "redux-thunk";
+import { reducer as formReducer } from 'redux-form'
+
 
 import './index.scss';
 import App from './App';
@@ -18,6 +20,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   halls: roomReducer,
   tickets: ticketsReducer,
+  form: formReducer
 });
 
 const composeEnhancers =

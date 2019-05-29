@@ -73,6 +73,7 @@ class FormAuth extends React.Component {
                 name='email'
                 placeholder='Email'
                 value={email}
+                errorText='error'
                 onChange={this.handleChange('email')} />
               <br />
 

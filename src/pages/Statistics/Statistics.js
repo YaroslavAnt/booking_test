@@ -69,6 +69,34 @@ class Statistics extends React.Component {
                 fontColor: '#333'
             }
         },
+        timeData: {
+            labels: this.props.halls.map(hall => hall.title),
+            datasets: [
+                {
+                    label: "Count of time",
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    data: this.props.halls.map(hall =>
+                        this.props.tickets.filter(ticket =>
+                            ticket.hall_id === hall._id).length)
+                }
+            ],
+        },
+        timeOptions: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }],
+            },
+            title: {
+                display: true,
+                text: 'Count of time',
+                fontSize: 20,
+                fontColor: '#333'
+            }
+        },
     }
 
     render() {

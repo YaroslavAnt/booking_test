@@ -8,6 +8,7 @@ import FormAuth from '../../components/FormAuth/FormAuth';
 import { signIn, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import { Dialog, DialogTitle, Typography, Button } from '@material-ui/core';
+import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
 
 
 class Login extends React.Component {
@@ -54,13 +55,22 @@ class Login extends React.Component {
       )
     }
 
+    // return (
+    //   <FormAuth userRequest={this.handleRequest} formType="Login">
+    //     <Typography align='center'> Have no account?</Typography>
+    //     <Link to={'/sign-up'}>
+    //       <Button variant='text' color='secondary'>Sign Up </Button>
+    //     </Link>
+    //   </FormAuth>
+    // )
+
     return (
-      <FormAuth userRequest={this.handleRequest} formType="Login">
+      <FormAuthRedux formType="Login" handleSubmit={this.handleRequest}>
         <Typography align='center'> Have no account?</Typography>
         <Link to={'/sign-up'}>
           <Button variant='text' color='secondary'>Sign Up </Button>
         </Link>
-      </FormAuth>
+      </FormAuthRedux>
     )
   }
 }
