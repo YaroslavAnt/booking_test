@@ -57,10 +57,8 @@ export const getTickets = () => {
   // const date = sessionStorage.getItem("date") || moment().format('YYYY-MM-DD');
   // const currentMomth = sessionStorage.getItem("currentMonth")
   // console.log(moment(currentMomth).format('YYYY-MM'))
-
   // const from = new Date(moment(currentMomth).clone().format('YYYY-MM')).getTime();
   // const to = new Date(moment(currentMomth).clone().add(1, 'month').format('YYYY-MM')).getTime();
-
   // console.log(from);
   // console.log(to);
 

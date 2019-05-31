@@ -19,7 +19,7 @@ const styles = () => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-around'
   },
   text: {
     display: 'flex',

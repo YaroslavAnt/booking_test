@@ -52,11 +52,12 @@ class FormBooking extends Component {
   }
 
   onAdd = () => {
+    const { user_id, hall_id } = this.props;
     const { date, start, end, title } = this.state;
 
     this.props.postTicket({
-      hall_id: localStorage.getItem("currentHallId"),
-      user_id: localStorage.getItem("userId"),
+      hall_id,
+      user_id,
       from: new Date(date + 'T' + start).getTime() + 1,
       to: new Date(date + 'T' + end).getTime() - 1,
       title
@@ -127,7 +128,6 @@ class FormBooking extends Component {
           onChange={this.onChange}
         />
 
-
         {isAuthenticated ? (
           <Button
             color='secondary'
@@ -147,9 +147,11 @@ class FormBooking extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    tickets: state.tickets.tickets
+    tickets: state.tickets.tickets,
+    user_id: state.auth.userId,
+    hall_id: state.halls.currentHallId
   };
 };
 
@@ -165,6 +167,8 @@ FormBooking.propTypes = {
   start: PropTypes.string,
   tickets: PropTypes.array.isRequired,
   postTicket: PropTypes.func.isRequired,
+  user_id: PropTypes.string,
+  hall_id: PropTypes.string.isRequired
 }
 
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from "react-router-dom";
-// import { browserHistory } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import thunk from "redux-thunk";
@@ -35,9 +34,9 @@ const store = createStore(
 
 const app = (
   <Provider store={store}>
-    <HashRouter basename={process.env.PUBLIC_URL} >
+    <BrowserRouter basename={process.env.PUBLIC_URL} >
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </Provider>
 );
 

@@ -2,6 +2,7 @@
 
 export const initialState = {
   halls: [],
+  currentHallId: null,
   err: null,
   isLoading: false
 }
@@ -27,6 +28,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         err: action.err,
         isLoading: false
+      };
+
+    case actionTypes.SET_HALL_ID:
+      return {
+        ...state,
+        currentHallId: action.hall_id
       };
 
     case actionTypes.ERR_CONFIRM:

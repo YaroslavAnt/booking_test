@@ -14,12 +14,10 @@ export const signUp = (email, password) => {
       .post(`${url}/signUp`, user)
       .then(res => {
         const { id, email } = res.data;
-
         localStorage.setItem("email", email);
         dispatch(signUpSuccess(id, email));
       })
       .catch(err => {
-        console.log(err.response)
         dispatch(authFail(err.message));
       });
   };
@@ -31,10 +29,9 @@ export const signIn = (user) => {
       .post(`${url}/signIn`, user)
       .then(res => {
         const { token, _id } = res.data;
-
         localStorage.setItem("token", token);
         localStorage.setItem("userId", _id);
-        dispatch(signInSuccess(token));
+        dispatch(signInSuccess(token, _id));
       })
       .catch(err => {
         dispatch(authFail(err.message));
@@ -52,10 +49,11 @@ export const signUpSuccess = (userId, email) => {
   };
 };
 
-export const signInSuccess = (token) => {
+export const signInSuccess = (token, userId) => {
   return {
     type: actionTypes.SIGNIN_SUCCESS,
-    token
+    token,
+    userId
   };
 };
 

@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
-import FormAuth from '../../components/FormAuth/FormAuth';
+// import FormAuth from '../../components/FormAuth/FormAuth';
 import { signIn, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import { Dialog, DialogTitle, Typography, Button } from '@material-ui/core';
-import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
+// import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
+import FormSigninRedux from '../../components/FormSigninRedux/FormSigninRedux';
 
 
 class Login extends React.Component {
@@ -26,15 +27,14 @@ class Login extends React.Component {
     this.props.onClose();
   };
 
-  handleRequest = (user) => {
-    const { email } = user;
-    localStorage.setItem("email", email);
-
-    this.props.onSubmit(user);
+  handleSubmit = (e) => {
+    const { formData: { values } } = this.props;
+    localStorage.setItem("email", values.email);
+    this.props.onSubmit(values);
   }
 
   render() {
-    const { isAuthenticated, err } = this.props;
+    const { err, formData, isAuthenticated } = this.props;
 
     if (isAuthenticated) {
       return (
@@ -55,30 +55,24 @@ class Login extends React.Component {
       )
     }
 
-    // return (
-    //   <FormAuth userRequest={this.handleRequest} formType="Login">
-    //     <Typography align='center'> Have no account?</Typography>
-    //     <Link to={'/sign-up'}>
-    //       <Button variant='text' color='secondary'>Sign Up </Button>
-    //     </Link>
-    //   </FormAuth>
-    // )
-
     return (
-      <FormAuthRedux formType="Login" handleSubmit={this.handleRequest}>
-        <Typography align='center'> Have no account?</Typography>
-        <Link to={'/sign-up'}>
-          <Button variant='text' color='secondary'>Sign Up </Button>
-        </Link>
-      </FormAuthRedux>
+      <Page>
+        <FormSigninRedux formType="Sign In" handleSubmit={this.handleSubmit} formData={formData}>
+          <Typography align='center'>Have no account?</Typography>
+          <Link to={'/sign-up'}>
+            <Button variant='text' color='secondary'>Sign Up</Button>
+          </Link>
+        </FormSigninRedux>
+      </Page>
     )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: !!localStorage.getItem("token"),
-    err: state.auth.err
+    err: state.auth.err,
+    formData: state.form.formAuthRedux,
+    isAuthenticated: !!localStorage.getItem("token")
   };
 };
 
@@ -90,7 +84,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 Login.propTypes = {
-  isAuthenticated: PropTypes.bool,
   err: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,

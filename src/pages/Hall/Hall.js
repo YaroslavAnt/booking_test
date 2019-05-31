@@ -8,6 +8,7 @@ import Page from '../../layouts/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import RoomScedule from '../../components/RoomScedule/RoomScedule';
 import { getTickets, confirmErr } from '../../redux/actions/tickets';
+import { setHallId } from '../../redux/actions/halls';
 
 
 const styles = theme => ({
@@ -45,13 +46,16 @@ class Hall extends React.Component {
   };
 
   componentDidMount() {
-    this.props.getTickets();
+    const { hall_id } = this.props.match.params;
+    console.log(hall_id)
+    this.props.setHallId(hall_id);
   }
 
   render() {
     const {
       classes,
       hall,
+      user_id,
       hallsErr,
       tickets,
       ticketsErr,
@@ -102,7 +106,7 @@ class Hall extends React.Component {
             {hall.description}
           </Typography>
 
-          <RoomScedule tickets={tickets} hallId={hall._id} />
+          <RoomScedule tickets={tickets} hallId={hall._id} userId={user_id} />
         </Paper>}
       </Page>
     );
@@ -119,13 +123,15 @@ const mapStateToProps = (state, ownProps) => {
     hallsLoading: state.halls.isLoading,
     ticketsLoading: state.tickets.isLoading,
     hall: state.halls.halls.find(hall => hall._id === hallId),
+    user_id: state.auth.userId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getTickets: () => dispatch(getTickets()),
-    confirmErr: () => dispatch(confirmErr())
+    confirmErr: () => dispatch(confirmErr()),
+    setHallId: (hall_id) => dispatch(setHallId(hall_id))
   };
 };
 

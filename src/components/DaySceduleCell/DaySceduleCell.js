@@ -25,6 +25,7 @@ class DaySceduleCell extends React.Component {
     // const { items } = JSON.parse(localStorage.getItem("data" + currentRoom)) || { items: [] };
     const { hours, currentDate, tickets, hallId } = this.props;
     const { date } = currentDate;
+
     const userId = localStorage.getItem("userId");
     const hallTickets = tickets.filter(ticket => ticket.hall_id === hallId);
     const usertickets = hallTickets.filter(ticket => ticket.user_id === userId);

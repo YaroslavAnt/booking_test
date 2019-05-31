@@ -8,7 +8,7 @@ import DayScedule from '../DayScedule/DayScedule';
 
 import Calendar from '../MyCalendar/MyCalendar';
 
-const styles = theme => ({
+const styles = () => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -64,7 +64,6 @@ class RoomScedule extends React.Component {
           <Typography variant='subtitle1' align='center'>Click cell for more info</Typography>
 
           <DayScedule currentDate={this.state} {...this.props} />
-
         </form>
       </div>
     )

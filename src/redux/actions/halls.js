@@ -45,3 +45,11 @@ export const loadFail = (err) => {
     err
   };
 };
+
+export const setHallId = (hall_id) => {
+  console.log(hall_id)
+  return {
+    type: actionTypes.SET_HALL_ID,
+    hall_id
+  }
+}
