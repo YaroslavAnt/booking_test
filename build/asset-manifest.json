@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/booking_test/static/css/main.04c6af8b.chunk.css",
-    "main.js": "/booking_test/static/js/main.3246fa78.chunk.js",
-    "main.js.map": "/booking_test/static/js/main.3246fa78.chunk.js.map",
+    "main.css": "/booking_test/static/css/main.b91f716d.chunk.css",
+    "main.js": "/booking_test/static/js/main.d82683f9.chunk.js",
+    "main.js.map": "/booking_test/static/js/main.d82683f9.chunk.js.map",
     "runtime~main.js": "/booking_test/static/js/runtime~main.ce44fa32.js",
     "runtime~main.js.map": "/booking_test/static/js/runtime~main.ce44fa32.js.map",
-    "static/js/2.86011581.chunk.js": "/booking_test/static/js/2.86011581.chunk.js",
-    "static/js/2.86011581.chunk.js.map": "/booking_test/static/js/2.86011581.chunk.js.map",
+    "static/js/2.f398df3d.chunk.js": "/booking_test/static/js/2.f398df3d.chunk.js",
+    "static/js/2.f398df3d.chunk.js.map": "/booking_test/static/js/2.f398df3d.chunk.js.map",
     "index.html": "/booking_test/index.html",
-    "precache-manifest.47e2234692cebd6b8e37511731275429.js": "/booking_test/precache-manifest.47e2234692cebd6b8e37511731275429.js",
+    "precache-manifest.22ac4267fd5dd2f18c22e0978640c9c5.js": "/booking_test/precache-manifest.22ac4267fd5dd2f18c22e0978640c9c5.js",
     "service-worker.js": "/booking_test/service-worker.js",
-    "static/css/main.04c6af8b.chunk.css.map": "/booking_test/static/css/main.04c6af8b.chunk.css.map"
+    "static/css/main.b91f716d.chunk.css.map": "/booking_test/static/css/main.b91f716d.chunk.css.map"
   }
 }
