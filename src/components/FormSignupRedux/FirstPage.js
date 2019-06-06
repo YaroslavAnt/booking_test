@@ -22,7 +22,6 @@ const FirstPage = (props) => {
     const { handleSubmit, formData, classes } = props;
     const errors = formData ? formData.syncErrors : null
 
-    console.log(formData);
     return (
         <form onSubmit={handleSubmit} className={classes.form}>
             <div className={classes.marginBottom}>

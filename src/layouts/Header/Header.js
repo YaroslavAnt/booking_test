@@ -28,10 +28,10 @@ class Header extends React.Component {
     this.setState({ open: true });
   };
 
-  // handleLogOut = () => {
-  //   localStorage.removeItem("token");
-  //   this.setState()
-  // }
+  handleLogout = () => {
+    this.props.onLogOut();
+    this.setState({ open: false })
+  }
 
   render() {
     const token = localStorage.getItem("token");
@@ -62,7 +62,7 @@ class Header extends React.Component {
             message={
               <Link to='/'>
                 <Button
-                  onClick={this.props.onLogOut}
+                  onClick={this.handleLogout}
                   variant='contained'
                   color='secondary'
                 >
@@ -85,7 +85,6 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = state => {
-
   return {
     token: state.auth.token
   };

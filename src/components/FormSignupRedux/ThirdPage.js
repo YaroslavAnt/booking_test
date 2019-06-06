@@ -18,6 +18,7 @@ const styles = () => ({
 
 const ThirdPage = (props) => {
     const { handleSubmit, formData, classes } = props;
+    console.log(formData)
 
     return (
         <form onSubmit={handleSubmit} className={classes.form}>
@@ -34,7 +35,7 @@ const ThirdPage = (props) => {
             )}
 
             <Typography variant='subtitle1' className={classes.marginBottom}>
-                Your country: {formData.values.country}
+                Your country: {formData.values.country.label}
             </Typography>
 
             <Typography variant='subtitle1' className={classes.marginBottom}>

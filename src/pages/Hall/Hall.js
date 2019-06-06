@@ -47,7 +47,6 @@ class Hall extends React.Component {
 
   componentDidMount() {
     const { hall_id } = this.props.match.params;
-    console.log(hall_id)
     this.props.setHallId(hall_id);
   }
 

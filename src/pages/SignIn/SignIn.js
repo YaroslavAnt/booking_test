@@ -10,6 +10,7 @@ import Page from '../../layouts/Page/Page';
 import { Dialog, DialogTitle, Typography, Button } from '@material-ui/core';
 // import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
 import FormSigninRedux from '../../components/FormSigninRedux/FormSigninRedux';
+import FormSigninFormik from '../../components/FormSigninFormik/FormSigninFormik';
 
 
 class Login extends React.Component {
@@ -28,9 +29,8 @@ class Login extends React.Component {
   };
 
   handleSubmit = (e) => {
-    const { formData: { values } } = this.props;
-    localStorage.setItem("email", values.email);
-    this.props.onSubmit(values);
+    localStorage.setItem("email", e.email);
+    this.props.onSubmit(e);
   }
 
   render() {
@@ -57,12 +57,12 @@ class Login extends React.Component {
 
     return (
       <Page>
-        <FormSigninRedux formType="Sign In" handleSubmit={this.handleSubmit} formData={formData}>
+        <FormSigninFormik handleSubmit={this.handleSubmit} formData={formData}>
           <Typography align='center'>Have no account?</Typography>
           <Link to={'/sign-up'}>
             <Button variant='text' color='secondary'>Sign Up</Button>
           </Link>
-        </FormSigninRedux>
+        </FormSigninFormik>
       </Page>
     )
   }

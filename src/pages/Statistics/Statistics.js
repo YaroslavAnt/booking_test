@@ -26,7 +26,6 @@ class Statistics extends React.Component {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 1
                     }
                 }],
             },

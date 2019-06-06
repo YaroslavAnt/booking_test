@@ -48,7 +48,6 @@ class FormAuthRedux extends React.Component {
   render() {
     const { classes, handleSubmit, formData } = this.props;
     let { page } = this.state;
-    console.log(formData)
 
     return (
       <div className={classes.login}>

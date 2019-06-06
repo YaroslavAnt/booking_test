@@ -7,6 +7,7 @@
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
     "chart.js": "^2.8.0",
+    "formik": "^1.5.7",
     "material-ui-pickers": "^2.2.4",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
@@ -18,6 +19,8 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
+    "react-select": "^3.0.4",
+    "react-select-country-list": "^2.0.1",
     "redux": "^4.0.1",
     "redux-form": "^8.2.1",
     "redux-thunk": "^2.3.0"

@@ -3,17 +3,19 @@ import axios from "axios";
 
 const url = 'https://web-ninjas.net/tickets';
 const putUrl = 'https://web-ninjas.net/ticket';
-const config = {
-  headers: {
-    'Authorization': localStorage.getItem("token")
-  }
-}
+
 
 export const postTicket = (hall) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
+    }
+  }
+  console.log(hall);
+  console.log(config)
   return dispatch => {
     dispatch(getTicketsInit());
     const { from, to } = hall;
-
     if (new Date().getTime() > from) {
       dispatch(getTicketsFail("This time is already past"))
     } else if (from > to) {
@@ -32,6 +34,11 @@ export const postTicket = (hall) => {
 };
 
 export const putTicket = (hall, ticketId) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
+    }
+  }
   return dispatch => {
     dispatch(getTicketsInit());
     const { from, to } = hall;
@@ -78,6 +85,11 @@ export const getTickets = () => {
 };
 
 export const deleteTickets = (ticketId) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
+    }
+  }
   return dispatch => {
     axios
       .delete(`${url}/${ticketId}`, config)

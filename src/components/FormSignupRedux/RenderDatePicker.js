@@ -17,6 +17,5 @@ export const renderDatePicker = ({
                 {...input}
                 {...custom}
             />
-            <FormHelperText style={{ color: 'red' }}>{error}</FormHelperText>
         </div>
     )

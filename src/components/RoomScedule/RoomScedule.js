@@ -59,7 +59,7 @@ class RoomScedule extends React.Component {
             <Calendar onChangeDay={(date) => this.onChangeDay(date)} />
           </div>
 
-          <Typography variant='h4' align='center'>Scedule for {date}</Typography>
+          <Typography variant='h4' align='center'>Schedule for {date}</Typography>
 
           <Typography variant='subtitle1' align='center'>Click cell for more info</Typography>
 
