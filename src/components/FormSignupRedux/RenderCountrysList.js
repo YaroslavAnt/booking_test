@@ -13,10 +13,9 @@ export const renderCountrysList = ({
         <div style={{ width: 200 }}>
             <Select
                 placeholder={label}
-                // {...input}
+                // value={input.value.value}
                 options={countryList().getData()}
                 onChange={(value) => input.onChange(value)}
-            // onBlur={(value) => input.onBlur(value)}
             />
         </div>
     )

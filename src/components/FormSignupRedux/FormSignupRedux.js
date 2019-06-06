@@ -58,11 +58,11 @@ class FormAuthRedux extends React.Component {
           )}
 
           {page === 2 && (
-            <SecondPage handleSubmit={this.nextPage} formData={formData} />
+            <SecondPage handleSubmit={this.nextPage} handleBack={this.prevPage} formData={formData} />
           )}
 
           {page === 3 && (
-            <ThirdPage handleSubmit={handleSubmit} formData={formData} />
+            <ThirdPage handleSubmit={handleSubmit} handleBack={this.prevPage} formData={formData} />
           )}
 
           <div className={classes.margin + ' ' + classes.text}>

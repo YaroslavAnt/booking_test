@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ class Statistics extends React.Component {
             datasets: [
                 {
                     label: "Count of tickets",
-                    backgroundColor: 'rgb(255, 99, 132)',
+                    backgroundColor: ['#888', '#88f', '#8f8', '#f88'],
                     data: this.props.halls.map(hall =>
                         this.props.tickets.filter(ticket =>
                             ticket.hall_id === hall._id).length)
@@ -34,14 +34,18 @@ class Statistics extends React.Component {
                 text: 'Count of tickets',
                 fontSize: 20,
                 fontColor: '#333'
+            },
+            legend: {
+                display: false
             }
         },
+
         usersData: {
             labels: this.props.halls.map(hall => hall.title),
             datasets: [
                 {
                     label: "Count of users",
-                    backgroundColor: 'rgb(255, 99, 132)',
+                    backgroundColor: ['#888', '#88f', '#8f8', '#f88'],
                     data: this.props.halls.map(hall =>
                         new Set(
                             this.props.tickets
@@ -53,49 +57,17 @@ class Statistics extends React.Component {
             ]
         },
         usersOptions: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 1
-                    }
-                }],
-            },
             title: {
                 display: true,
                 text: 'Count of users',
                 fontSize: 20,
                 fontColor: '#333'
-            }
-        },
-        timeData: {
-            labels: this.props.halls.map(hall => hall.title),
-            datasets: [
-                {
-                    label: "Count of time",
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    data: this.props.halls.map(hall =>
-                        this.props.tickets.filter(ticket =>
-                            ticket.hall_id === hall._id).length)
-                }
-            ],
-        },
-        timeOptions: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 1
-                    }
-                }],
             },
-            title: {
-                display: true,
-                text: 'Count of time',
-                fontSize: 20,
-                fontColor: '#333'
+            legend: {
+                position: 'bottom'
             }
         },
+
     }
 
     render() {
@@ -109,7 +81,7 @@ class Statistics extends React.Component {
         return (
             <Page>
                 <div className="flexbox col">
-                    <div>
+                    <div className="mb-40">
                         <Bar
                             data={ticketsData}
                             options={ticketsOptions}
@@ -118,7 +90,7 @@ class Statistics extends React.Component {
                     </div>
 
                     <div>
-                        <Bar
+                        <Doughnut
                             data={usersData}
                             options={usersOptions}
                             height={300}

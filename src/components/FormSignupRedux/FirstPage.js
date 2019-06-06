@@ -46,7 +46,7 @@ const FirstPage = (props) => {
                 type='submit'
                 variant='contained'
                 color='secondary'
-                disabled={errors ? !!(errors.email || errors.password) : true}
+                disabled={errors ? !!(errors.email || errors.password) : false}
             >
                 Next
             </Button>

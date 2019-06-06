@@ -21,7 +21,7 @@ const styles = () => ({
 })
 
 const SecondPage = (props) => {
-    const { handleSubmit, formData, classes } = props;
+    const { handleSubmit, formData, classes, handleBack } = props;
     return (
         <form onSubmit={handleSubmit} className={classes.form}>
             <div>
@@ -52,6 +52,15 @@ const SecondPage = (props) => {
                 />
             </div>
             <br />
+
+            <Button
+                variant='text'
+                color='primary'
+                onClick={handleBack}
+                className={classes.marginBottom}
+            >
+                Back
+            </Button>
 
             <Button
                 type='submit'
