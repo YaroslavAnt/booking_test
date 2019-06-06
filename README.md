@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Online app [Booking App](https://yaroslavant.github.io/booking_test/
+Online app [Booking App](https://yaroslavant.github.io/booking_test/)
 
 ## Available Scripts
 
