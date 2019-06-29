@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
+import { Dialog, DialogTitle } from '@material-ui/core';
+
 
 import Page from '../../layouts/Page/Page';
 import Room1ListItem from '../../components/RoomListItem/Room1ListItem';
@@ -9,7 +11,7 @@ import Room1ListItem from '../../components/RoomListItem/Room1ListItem';
 import './Dashboard.scss'
 import { loadHalls } from '../../redux/actions/halls';
 import Spinner from '../../components/Spinner/Spinner';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { getTickets } from '../../redux/actions/tickets';
 
 class Dashboard extends React.Component {
   state = {
@@ -25,7 +27,8 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    this.props.onLoad();
+    this.props.loadHalls();
+    this.props.loadTickets();
   }
 
   render() {
@@ -53,13 +56,12 @@ class Dashboard extends React.Component {
     }
 
     return (
-
       <Page >
         <div className="dashboard">
           {
             halls.map((hall, idx) => {
               return (
-                <Room1ListItem hall={hall} key={idx} roomNumber={idx} hallId={hall._id} />
+                <Room1ListItem hall={hall} key={hall._id} roomNumber={idx} />
               )
             })
           }
@@ -68,6 +70,7 @@ class Dashboard extends React.Component {
     )
   }
 }
+
 
 const mapStateToProps = state => {
   return {
@@ -79,7 +82,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLoad: () => dispatch(loadHalls()),
+    loadHalls: () => dispatch(loadHalls()),
+    loadTickets: () => dispatch(getTickets()),
   };
 };
 
@@ -87,7 +91,8 @@ Dashboard.propTypes = {
   halls: PropTypes.array.isRequired,
   err: PropTypes.string,
   isLoading: PropTypes.bool.isRequired,
-  onLoad: PropTypes.func.isRequired,
+  loadHalls: PropTypes.func.isRequired,
+  loadTickets: PropTypes.func.isRequired,
 }
 
 export default connect(

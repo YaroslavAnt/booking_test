@@ -1,6 +1,8 @@
 ﻿import * as actionTypes from './actionTypes'
 import axios from "axios";
 
+const url = 'https://web-ninjas.net';
+
 export const signUp = (email, password) => {
   return dispatch => {
     const user = {
@@ -8,23 +10,14 @@ export const signUp = (email, password) => {
       password,
     };
 
-    let url = 'http://ec2-3-84-16-108.compute-1.amazonaws.com:4000/signUp';
-
     axios
-      .post(url, user)
+      .post(`${url}/signUp`, user)
       .then(res => {
-        console.log(res);
         const { id, email } = res.data;
-
-        // localStorage.setItem("userId", id);
         localStorage.setItem("email", email);
-
         dispatch(signUpSuccess(id, email));
-
       })
       .catch(err => {
-        console.log(err.message);
-
         dispatch(authFail(err.message));
       });
   };
@@ -32,27 +25,21 @@ export const signUp = (email, password) => {
 
 export const signIn = (user) => {
   return dispatch => {
-
-    let url = 'http://ec2-3-84-16-108.compute-1.amazonaws.com:4000/signIn';
-
     axios
-      .post(url, user)
+      .post(`${url}/signIn`, user)
       .then(res => {
-        console.log(res);
         const { token, _id } = res.data;
-
         localStorage.setItem("token", token);
         localStorage.setItem("userId", _id);
-
-        dispatch(signInSuccess(token));
+        dispatch(signInSuccess(token, _id));
       })
       .catch(err => {
-        console.log(err);
-
         dispatch(authFail(err.message));
       });
   };
 };
+
+
 
 export const signUpSuccess = (userId, email) => {
   return {
@@ -62,10 +49,11 @@ export const signUpSuccess = (userId, email) => {
   };
 };
 
-export const signInSuccess = (token) => {
+export const signInSuccess = (token, userId) => {
   return {
     type: actionTypes.SIGNIN_SUCCESS,
-    token
+    token,
+    userId
   };
 };
 
@@ -77,9 +65,8 @@ export const authFail = (err) => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("email");
-  localStorage.removeItem("userId");
+  localStorage.clear();
+  sessionStorage.clear();
   return {
     type: actionTypes.LOGOUT
   };

@@ -3,6 +3,7 @@
 import { Paper, TextField, withStyles, Button } from '@material-ui/core';
 
 import Page from '../../layouts/Page/Page';
+import './FormAuth.scss'
 
 const styles = () => ({
   login: {
@@ -18,7 +19,7 @@ const styles = () => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-around'
   },
   text: {
     display: 'flex',
@@ -26,15 +27,25 @@ const styles = () => ({
   }
 })
 
-class MyForm extends React.Component {
+class FormAuth extends React.Component {
   state = {
     email: '',
     password: '',
+    isVaild: true
   }
 
   handleChange = name => event => {
+    this.checkValid()
     this.setState({ [name]: event.target.value });
   };
+
+  checkValid = () => {
+    const { email } = this.state;
+    const regExp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    this.setState({
+      isVaild: regExp.test(email)
+    })
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -48,7 +59,7 @@ class MyForm extends React.Component {
 
   render() {
     const { classes, formType } = this.props;
-    const { email, password } = this.state;
+    const { email, password, isVaild } = this.state;
     // const userId = localStorage.getItem("userId");
 
     return (
@@ -57,10 +68,12 @@ class MyForm extends React.Component {
           <Paper >
             <form onSubmit={this.handleSubmit} className={classes.form}>
               <TextField
+                error={!isVaild}
                 className={classes.margin}
                 name='email'
                 placeholder='Email'
                 value={email}
+                errorText='error'
                 onChange={this.handleChange('email')} />
               <br />
 
@@ -78,7 +91,7 @@ class MyForm extends React.Component {
                 color='secondary'
                 type='submit'
                 className={classes.button}
-                disabled={!(email && password)}
+                disabled={!(email && password && isVaild)}
               >
                 {formType}
               </Button>
@@ -96,4 +109,4 @@ class MyForm extends React.Component {
 
 }
 
-export default withStyles(styles)(MyForm);
+export default withStyles(styles)(FormAuth);

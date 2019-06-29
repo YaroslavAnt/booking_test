@@ -1,76 +1,108 @@
 ﻿import * as actionTypes from './actionTypes'
 import axios from "axios";
-import moment from 'moment';
+
+const url = 'https://web-ninjas.net/tickets';
+const putUrl = 'https://web-ninjas.net/ticket';
 
 
-const url = 'http://ec2-3-84-16-108.compute-1.amazonaws.com:4000/tickets';
-
-export const putTicket = (hall) => {
-  return dispatch => {
-    const config = {
-      headers: {
-        'Authorization': localStorage.getItem("token")
-      }
+export const postTicket = (hall) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
     }
+  }
+  console.log(hall);
+  console.log(config)
+  return dispatch => {
     dispatch(getTicketsInit());
-    const { from } = hall;
-    console.log(from);
-
-    if (new Date().getTime() < from) {
+    const { from, to } = hall;
+    if (new Date().getTime() > from) {
+      dispatch(getTicketsFail("This time is already past"))
+    } else if (from > to) {
+      dispatch(getTicketsFail("End must be later then start"))
+    } else {
       axios
         .post(url, hall, config)
-        .then(res => {
+        .then(() => {
           dispatch(getTickets());
         })
         .catch(err => {
           dispatch(getTicketsFail(err.message));
         });
-    } else {
-      dispatch(getTicketsFail("This time is already past"))
     }
+  };
+};
 
+export const putTicket = (hall, ticketId) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
+    }
+  }
+  return dispatch => {
+    dispatch(getTicketsInit());
+    const { from, to } = hall;
 
+    if (new Date().getTime() > from) {
+      dispatch(getTicketsFail("This time is already past"))
+    } else if (from > to) {
+      dispatch(getTicketsFail("End must be later then start"))
+    } else {
+      axios
+        .put(`${putUrl}/${ticketId}`, { from, to, title: "event" }, config)
+        .then(() => {
+          dispatch(getTickets());
+        })
+        .catch(err => {
+          dispatch(getTicketsFail(err.message));
+        });
+    }
   };
 };
 
 export const getTickets = () => {
+  // const date = sessionStorage.getItem("date") || moment().format('YYYY-MM-DD');
+  // const currentMomth = sessionStorage.getItem("currentMonth")
+  // console.log(moment(currentMomth).format('YYYY-MM'))
+  // const from = new Date(moment(currentMomth).clone().format('YYYY-MM')).getTime();
+  // const to = new Date(moment(currentMomth).clone().add(1, 'month').format('YYYY-MM')).getTime();
+  // console.log(from);
+  // console.log(to);
+
   return dispatch => {
     dispatch(getTicketsInit());
     axios
-      .get(url)
+      .get(`${url}`)
+      // .get(`${url}params/${from}/${to}`)
       .then(res => {
-        console.log(res);
         const tickets = res.data;
         dispatch(getTicketsSuccess(tickets));
       })
       .catch(err => {
-        console.log(err);
         dispatch(getTicketsFail(err.message));
       });
   };
 };
 
-export const deleteTickets = (hall, ticketId) => {
-  return dispatch => {
-    const config = {
-      headers: {
-        'Authorization': localStorage.getItem("token")
-      }
+export const deleteTickets = (ticketId) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
     }
-    console.log(`${url}/${ticketId}`);
-
+  }
+  return dispatch => {
     axios
       .delete(`${url}/${ticketId}`, config)
       .then(res => {
-        console.log(res);
         dispatch(getTickets());
       })
       .catch(err => {
-        console.log(err);
         dispatch(getTicketsFail(err.message));
       });
   };
 };
+
+
 
 export const getTicketsInit = () => {
   return {

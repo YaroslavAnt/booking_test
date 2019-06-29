@@ -1,25 +1,29 @@
 import React from 'react';
-import { Typography, Button, withStyles } from '@material-ui/core';
+import { Link } from "react-router-dom";
 
-import './Footer.scss';
+import { Typography, withStyles, Button } from '@material-ui/core';
+
 
 const styles = theme => ({
-    margin: {
-        margin: theme.spacing.unit,
-    }
+  footer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: "#111",
+    padding: 20
+  }
 });
 
 const Footer = (props) => {
-    const { classes } = props;
-    return (
-        <div className="footer">
-            <div>
-                <Button href='/sign-in' variant='contained' color='secondary' className={classes.margin}>Sign In</Button>
-                <Button href='/sign-up' variant='contained' color='secondary' className={classes.margin}>Sign Up</Button>
-            </div>
-            <Typography align='right' color='secondary'> Made by Yaroslav Antonchyk </Typography>
-        </div>
-    )
+  const { classes } = props;
+  return (
+    <div className={classes.footer}>
+      <Link to='/statistics'>
+        <Button variant='contained' color='secondary'>Get Statistics</Button>
+      </Link>
+      <Typography align='right' color='secondary'> Made by Yaroslav Antonchyk </Typography>
+    </div>
+  )
 };
 
 export default withStyles(styles)(Footer);

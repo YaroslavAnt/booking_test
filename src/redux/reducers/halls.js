@@ -1,19 +1,19 @@
 ﻿import * as actionTypes from "../actions/actionTypes";
 
-const initialState = {
+export const initialState = {
   halls: [],
+  currentHallId: null,
   err: null,
   isLoading: false
 }
 
 const reducer = (state = initialState, action) => {
-
   switch (action.type) {
 
     case actionTypes.LOAD_HALLS_INIT:
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
       };
 
     case actionTypes.LOAD_HALLS_SUCCES:
@@ -28,6 +28,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         err: action.err,
         isLoading: false
+      };
+
+    case actionTypes.SET_HALL_ID:
+      return {
+        ...state,
+        currentHallId: action.hall_id
       };
 
     case actionTypes.ERR_CONFIRM:
