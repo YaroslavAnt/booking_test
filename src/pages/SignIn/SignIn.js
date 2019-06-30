@@ -9,26 +9,23 @@ import { signIn, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import { Dialog, DialogTitle, Typography, Button } from '@material-ui/core';
 // import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
-import FormSigninRedux from '../../components/FormSigninRedux/FormSigninRedux';
 import FormSigninFormik from '../../components/FormSigninFormik/FormSigninFormik';
 
+import { observable, action } from 'mobx';
+import { observer } from 'mobx-react';
 
+@observer
 class Login extends React.Component {
+  @observable open = false
 
-  state = {
-    open: false,
-  }
+  @action handleOpen = () => this.open = true
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
+  @action handleClose = () => {
+    this.open = false;
     this.props.onClose();
   };
 
-  handleSubmit = (e) => {
+  @action handleSubmit = (e) => {
     localStorage.setItem("email", e.email);
     this.props.onSubmit(e);
   }
@@ -60,7 +57,7 @@ class Login extends React.Component {
         <FormSigninFormik handleSubmit={this.handleSubmit} formData={formData}>
           <Typography align='center'>Have no account?</Typography>
           <Link to={'/sign-up'}>
-            <Button variant='text' color='secondary'>Sign Up</Button>
+            <Button variant='text' color='secondary'>SignUp</Button>
           </Link>
         </FormSigninFormik>
       </Page>
