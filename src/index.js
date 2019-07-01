@@ -41,6 +41,11 @@ import store from './mobx'
 
 
 
+// if (process.env.NODE_ENV !== 'production') {
+//   var axe = require('react-axe');
+//   axe(React, ReactDOM, 1000);
+// }
+
 const app = (
   <Provider store={store}>
     <BrowserRouter basename={process.env.PUBLIC_URL} >
