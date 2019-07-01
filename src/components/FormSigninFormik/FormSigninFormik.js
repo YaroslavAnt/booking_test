@@ -1,6 +1,5 @@
 ﻿import React from 'react';
-import { reduxForm } from 'redux-form';
-import { Paper, TextField, withStyles, Button } from '@material-ui/core';
+import { Paper, withStyles, Button } from '@material-ui/core';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import { validate } from './Validate';
@@ -18,7 +17,8 @@ const styles = () => ({
   },
   form: {
     width: 300,
-    marginTop: 50,
+    margin: '40px 0',
+
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -42,6 +42,7 @@ const FormSigninFormik = (props) => {
       <Paper >
         <Formik
           initialValues={{ email: '', password: '' }}
+
           validate={validate}
           onSubmit={(e) => {
             handleSubmit(e)
@@ -86,7 +87,7 @@ const FormSigninFormik = (props) => {
           }}
         </Formik>
 
-        <div className={classes.margin + ' ' + classes.text}>
+        <div className={'mb-40 ' + classes.text}>
           {props.children}
         </div>
 

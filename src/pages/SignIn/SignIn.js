@@ -4,20 +4,15 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
-// import FormAuth from '../../components/FormAuth/FormAuth';
 import { signIn, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import { Dialog, DialogTitle, Typography, Button } from '@material-ui/core';
-// import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
-import FormSigninRedux from '../../components/FormSigninRedux/FormSigninRedux';
 import FormSigninFormik from '../../components/FormSigninFormik/FormSigninFormik';
 
 
 class Login extends React.Component {
 
-  state = {
-    open: false,
-  }
+  state = { open: false }
 
   handleOpen = () => {
     this.setState({ open: true });
