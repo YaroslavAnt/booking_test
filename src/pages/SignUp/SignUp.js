@@ -4,12 +4,9 @@ import PropTypes from 'prop-types';
 import { Typography, Button, Dialog, DialogTitle } from '@material-ui/core';
 import { Link } from "react-router-dom";
 
-// import FormAuth from '../../components/FormAuth/FormAuth';
 import { signUp, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import '../../styles/index.scss'
-// import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
-// import FormSigninRedux from '../../components/FormSigninRedux/FormSigninRedux';
 import FormSignupRedux from '../../components/FormSignupRedux/FormSignupRedux';
 
 class SignUp extends React.Component {

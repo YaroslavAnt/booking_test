@@ -1,0 +1,132 @@
+﻿import * as actionTypes from './actionTypes'
+import axios from "axios";
+
+const url = 'https://web-ninjas.net/tickets';
+const putUrl = 'https://web-ninjas.net/ticket';
+
+
+export const postTicket = (hall) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
+    }
+  }
+  console.log(hall);
+  console.log(config)
+  return dispatch => {
+    dispatch(getTicketsInit());
+    const { from, to } = hall;
+    if (new Date().getTime() > from) {
+      dispatch(getTicketsFail("This time is already past"))
+    } else if (from > to) {
+      dispatch(getTicketsFail("End must be later then start"))
+    } else {
+      axios
+        .post(url, hall, config)
+        .then(() => {
+          dispatch(getTickets());
+        })
+        .catch(err => {
+          dispatch(getTicketsFail(err.message));
+        });
+    }
+  };
+};
+
+export const putTicket = (hall, ticketId) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
+    }
+  }
+  return dispatch => {
+    dispatch(getTicketsInit());
+    const { from, to } = hall;
+
+    if (new Date().getTime() > from) {
+      dispatch(getTicketsFail("This time is already past"))
+    } else if (from > to) {
+      dispatch(getTicketsFail("End must be later then start"))
+    } else {
+      axios
+        .put(`${putUrl}/${ticketId}`, { from, to, title: "event" }, config)
+        .then(() => {
+          dispatch(getTickets());
+        })
+        .catch(err => {
+          dispatch(getTicketsFail(err.message));
+        });
+    }
+  };
+};
+
+export const getTickets = () => {
+  // const date = sessionStorage.getItem("date") || moment().format('YYYY-MM-DD');
+  // const currentMomth = sessionStorage.getItem("currentMonth")
+  // console.log(moment(currentMomth).format('YYYY-MM'))
+  // const from = new Date(moment(currentMomth).clone().format('YYYY-MM')).getTime();
+  // const to = new Date(moment(currentMomth).clone().add(1, 'month').format('YYYY-MM')).getTime();
+  // console.log(from);
+  // console.log(to);
+
+  return dispatch => {
+    dispatch(getTicketsInit());
+    axios
+      .get(`${url}`)
+      // .get(`${url}params/${from}/${to}`)
+      .then(res => {
+        const tickets = res.data;
+        dispatch(getTicketsSuccess(tickets));
+      })
+      .catch(err => {
+        dispatch(getTicketsFail(err.message));
+      });
+  };
+};
+
+export const deleteTickets = (ticketId) => {
+  const config = {
+    headers: {
+      'Authorization': localStorage.getItem("token")
+    }
+  }
+  return dispatch => {
+    axios
+      .delete(`${url}/${ticketId}`, config)
+      .then(res => {
+        dispatch(getTickets());
+      })
+      .catch(err => {
+        dispatch(getTicketsFail(err.message));
+      });
+  };
+};
+
+
+
+export const getTicketsInit = () => {
+  return {
+    type: actionTypes.GET_TICKETS_INIT,
+  };
+};
+
+export const getTicketsSuccess = (tickets) => {
+  return {
+    type: actionTypes.GET_TICKETS_SUCCESS,
+    tickets
+  };
+};
+
+export const getTicketsFail = (err) => {
+  return {
+    type: actionTypes.GET_TICKETS_FAIL,
+    err
+  };
+};
+
+export const confirmErr = () => {
+  return {
+    type: actionTypes.ERR_CONFIRM,
+  };
+};
+

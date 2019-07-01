@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { TextField, InputLabel, FormHelperText } from '@material-ui/core';
+import { TextField, InputLabel } from '@material-ui/core';
 
 export const renderDatePicker = ({
     label,

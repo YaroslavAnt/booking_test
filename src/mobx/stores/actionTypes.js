@@ -1,0 +1,18 @@
+﻿
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
+export const AUTH_FAIL = "AUTH_FAIL";
+export const LOGOUT = "LOGOUT";
+
+export const LOAD_HALLS_INIT = "LOAD_HALLS_INIT";
+export const LOAD_HALLS_SUCCES = "LOAD_HALLS_SUCCES";
+export const LOAD_HALLS_FAIL = "LOAD_HALLS_FAIL";
+export const SET_HALL_ID = "SET_HALL_ID";
+
+export const GET_TICKETS_INIT = "GET_TICKETS_INIT";
+export const GET_TICKETS_SUCCESS = "GET_TICKETS_SUCCESS";
+export const GET_TICKETS_FAIL = "GET_TICKETS_FAIL";
+
+export const ERR_CONFIRM = "ERR_CONFIRM";
+
+export const FORM_CHANGE = "FORM_CHANGE";
