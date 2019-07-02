@@ -1,5 +1,19 @@
 ﻿.dashboard{
     display: flex;
     flex-wrap: wrap;
-    align-content: flex-start
+    align-content: flex-start;
+
+    &__item{
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .dashboard{
+
+        &__item{        
+            width: 50%;    
+        }
+    }
+    
 }

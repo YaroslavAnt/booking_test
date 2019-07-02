@@ -5,8 +5,10 @@ import { Typography, Dialog } from '@material-ui/core';
 import './DaySceduleCell.scss';
 import FormBooking from '../FormBooking/FormBooking';
 import FormCorrect from '../FormCorrect/FormCorrect';
+import { inject, observer } from 'mobx-react';
 
-
+@inject('ticketsStore')
+@observer
 class DaySceduleCell extends React.Component {
   state = {
     open: false,
@@ -23,7 +25,7 @@ class DaySceduleCell extends React.Component {
   render() {
     // const currentRoom = sessionStorage.getItem("currentRoom")
     // const { items } = JSON.parse(localStorage.getItem("data" + currentRoom)) || { items: [] };
-    const { hours, currentDate, tickets, hallId } = this.props;
+    const { hours, currentDate, ticketsStore: {ticketsData:{tickets}}, hallId } = this.props;
     const { date } = currentDate;
 
     const userId = localStorage.getItem("userId");

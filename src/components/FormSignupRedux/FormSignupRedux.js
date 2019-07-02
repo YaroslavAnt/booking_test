@@ -2,9 +2,9 @@
 import { reduxForm } from 'redux-form';
 import { Paper, withStyles } from '@material-ui/core';
 import { validate } from './Validate';
-import FirstPage from './FirstPage';
-import SecondPage from './SecondPage';
-import ThirdPage from './ThirdPage';
+import FirstPage from './Page1';
+import SecondPage from './Page2';
+import ThirdPage from './Page3';
 
 
 const styles = () => ({

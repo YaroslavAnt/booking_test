@@ -1,22 +1,22 @@
 import React from 'react';
-import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import { Link } from "react-router-dom";
 
+import { Dialog, DialogTitle } from '@material-ui/core';
+import { observer, inject } from 'mobx-react';
+import { observable } from 'mobx';
 
 import Page from '../../layouts/Page/Page';
-import Room1ListItem from '../../components/RoomListItem/Room1ListItem';
-// import { halls } from '../../data/rooms';
 
 import './Dashboard.scss'
-import { loadHalls } from '../../redux/actions/halls';
 import Spinner from '../../components/Spinner/Spinner';
-import { getTickets } from '../../redux/actions/tickets';
+import RoomListItem from '../../components/RoomListItem/RoomListItem';
 
+@inject('hallsStore', 'ticketsStore')
+@observer
 class Dashboard extends React.Component {
-  state = {
-    open: true,
-  }
+
+  @observable open = true;
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -27,12 +27,13 @@ class Dashboard extends React.Component {
   };
 
   componentDidMount() {
-    this.props.loadHalls();
-    this.props.loadTickets();
+    this.props.hallsStore.fetchHalls();
+    this.props.ticketsStore.getTickets();
   }
 
   render() {
-    let { halls, err, isLoading } = this.props;
+    let { hallsStore: { data }, err, isLoading } = this.props;
+    console.log(data.halls)
 
     if (isLoading) {
       return (
@@ -59,9 +60,13 @@ class Dashboard extends React.Component {
       <Page >
         <div className="dashboard">
           {
-            halls.map((hall, idx) => {
+            data.halls.map((hall, idx) => {
               return (
-                <Room1ListItem hall={hall} key={hall._id} roomNumber={idx} />
+                <div className="dashboard__item" key={hall._id}>
+                  <Link to={`/hall/${hall._id}`}>
+                    <RoomListItem hall={hall} roomNumber={idx} />
+                  </Link>
+                </div>
               )
             })
           }
@@ -71,32 +76,13 @@ class Dashboard extends React.Component {
   }
 }
 
-
-const mapStateToProps = state => {
-  return {
-    halls: state.halls.halls,
-    err: state.halls.err,
-    isLoading: state.halls.isLoading,
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    loadHalls: () => dispatch(loadHalls()),
-    loadTickets: () => dispatch(getTickets()),
-  };
-};
-
 Dashboard.propTypes = {
-  halls: PropTypes.array.isRequired,
+  halls: PropTypes.array,
   err: PropTypes.string,
-  isLoading: PropTypes.bool.isRequired,
-  loadHalls: PropTypes.func.isRequired,
-  loadTickets: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  loadHalls: PropTypes.func,
+  loadTickets: PropTypes.func,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default (Dashboard);
 

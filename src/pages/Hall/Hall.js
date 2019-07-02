@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import { connect } from "react-redux";
 import { Paper, Typography, withStyles, Avatar, Dialog, DialogTitle } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Redirect } from "react-router-dom";
@@ -7,8 +6,8 @@ import { Redirect } from "react-router-dom";
 import Page from '../../layouts/Page/Page';
 import Spinner from '../../components/Spinner/Spinner';
 import RoomScedule from '../../components/RoomScedule/RoomScedule';
-import { getTickets, confirmErr } from '../../redux/actions/tickets';
-import { setHallId } from '../../redux/actions/halls';
+import { observer, inject } from 'mobx-react';
+import { observable } from 'mobx';
 
 
 const styles = theme => ({
@@ -29,11 +28,11 @@ const styles = theme => ({
   },
 });
 
+@inject('ticketsStore', 'hallsStore')
+@observer
 class Hall extends React.Component {
 
-  state = {
-    open: true,
-  }
+  @observable open = true;
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -45,22 +44,21 @@ class Hall extends React.Component {
     this.handleOpen();
   };
 
-  componentDidMount() {
-    const { hall_id } = this.props.match.params;
-    this.props.setHallId(hall_id);
-  }
-
   render() {
     const {
       classes,
-      hall,
-      user_id,
-      hallsErr,
-      tickets,
-      ticketsErr,
       hallsLoading,
+      hallsErr,
+      hallsStore: { data: { halls } },
+      user_id,
+      ticketsStore: { ticketsData: { tickets } },
+      ticketsErr,
       ticketsLoading,
     } = this.props;
+
+    const hallId = this.props.match.params.hall_id;
+    const hall = halls.find(hall => hall._id === hallId);
+    localStorage.setItem("currentHallId", hallId)
 
     if (hallsLoading || ticketsLoading) {
       return (
@@ -85,7 +83,9 @@ class Hall extends React.Component {
     }
 
     if (!hall) {
-      return <Redirect exact to='/' />
+      return (
+        <Redirect to='/' />
+      )
     }
 
     return (
@@ -112,41 +112,16 @@ class Hall extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const hallId = ownProps.match.params.hall_id;
-
-  return {
-    hallsErr: state.halls.err,
-    tickets: state.tickets.tickets,
-    ticketsErr: state.tickets.err,
-    hallsLoading: state.halls.isLoading,
-    ticketsLoading: state.tickets.isLoading,
-    hall: state.halls.halls.find(hall => hall._id === hallId),
-    user_id: state.auth.userId
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    getTickets: () => dispatch(getTickets()),
-    confirmErr: () => dispatch(confirmErr()),
-    setHallId: (hall_id) => dispatch(setHallId(hall_id))
-  };
-};
-
 Hall.propTypes = {
   hall: PropTypes.object,
   hallsErr: PropTypes.string,
   ticketsErr: PropTypes.string,
-  hallsLoading: PropTypes.bool.isRequired,
-  ticketsLoading: PropTypes.bool.isRequired,
+  hallsLoading: PropTypes.bool,
+  ticketsLoading: PropTypes.bool,
 
-  getTickets: PropTypes.func.isRequired,
-  confirmErr: PropTypes.func.isRequired,
+  getTickets: PropTypes.func,
+  confirmErr: PropTypes.func,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Hall));
+export default (withStyles(styles)(Hall));
 

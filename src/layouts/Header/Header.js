@@ -8,6 +8,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import './Header.scss'
 import { logout } from '../../redux/actions/auth';
+import { inject, observer } from 'mobx-react';
+import { observable } from 'mobx';
 
 const styles = theme => ({
   margin: {
@@ -15,22 +17,30 @@ const styles = theme => ({
   }
 });
 
+@inject('authStore')
+@observer
 class Header extends React.Component {
-  state = {
-    open: false
-  }
+  @observable open = false
+
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.open = false;
   };
 
   handleOpen = () => {
-    this.setState({ open: true });
+    this.open = true;
   };
 
   handleLogout = () => {
-    this.props.onLogOut();
-    this.setState({ open: false })
+    this.props.authStore.authData = {
+      email: null,
+      token: null,
+      userId: null,
+      err: null,
+      loading: false,
+    };
+    localStorage.clear();
+    this.open = false;
   }
 
   render() {
@@ -57,7 +67,7 @@ class Header extends React.Component {
 
           <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            open={this.state.open}
+            open={this.open}
             onClose={this.handleClose}
             message={
               <Link to='/'>
@@ -84,25 +94,22 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    token: state.auth.token
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     token: state.auth.token
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onLogOut: () => dispatch(logout()),
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onLogOut: () => dispatch(logout()),
+//   };
+// };
 
 Header.propTypes = {
   token: PropTypes.string,
-  onLogOut: PropTypes.func.isRequired,
+  onLogOut: PropTypes.func,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Header));
+export default (withStyles(styles)(Header));
 

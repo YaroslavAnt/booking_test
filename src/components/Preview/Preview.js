@@ -4,11 +4,15 @@ import moment from "moment";
 
 
 import './Preview.scss'
+import { observer, inject } from 'mobx-react';
 
+@inject('ticketsStore')
+@observer
 class Preview extends Component {
-  state = {}
+
   render() {
-    const { tickets, currentDay } = this.props;
+    const { ticketsStore: { ticketsData: { tickets } }, currentDay } = this.props;
+
     const currentHallId = localStorage.getItem("currentHallId");
 
     const hallTickets = tickets.filter(ticket => {
@@ -30,10 +34,6 @@ class Preview extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    tickets: state.tickets.tickets
-  };
-};
 
-export default connect(mapStateToProps)(Preview);
+
+export default Preview;

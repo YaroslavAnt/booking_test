@@ -1,8 +1,11 @@
 import React from 'react';
+import { observable } from 'mobx';
 
 import './Page.scss';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
+
+
 
 const Page = (props) => {
   return (

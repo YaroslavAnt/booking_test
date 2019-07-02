@@ -1,12 +1,12 @@
 ﻿import React, { Component } from 'react';
 import moment from 'moment';
-import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { TextField, withStyles, Card, CardHeader, Avatar, CardContent, Typography, IconButton, Collapse, Button } from '@material-ui/core';
 import Cached from '@material-ui/icons/Cached';
 import Delete from '@material-ui/icons/Delete';
 import Done from '@material-ui/icons/Done';
-import { putTicket, deleteTickets } from '../../redux/actions/tickets';
+import { observable, action } from 'mobx';
+import { inject, observer } from 'mobx-react';
 
 const styles = theme => ({
   root: {
@@ -30,8 +30,10 @@ const styles = theme => ({
   },
 });
 
+@inject('ticketsStore')
+@observer
 class FormCorrect extends Component {
-  state = {
+  @observable data = {
     date: this.props.date,
     start: `${this.props.hours}:00`,
     end: `${this.props.hours + 1}:00`,
@@ -39,28 +41,24 @@ class FormCorrect extends Component {
     expanded: false
   }
 
-  onChange = (e) => {
+  @action onChange = (e) => {
     const { name, value } = e.target;
-    const { date } = this.state;
-
+    const { date } = this.data;
     if (name === "start") {
-      this.setState({
-        end: moment(`${date}T${value}:00`).add(1, 'hours').format('HH:00')
-      })
+      this.data.end = moment(`${date}T${value}:00`).add(1, 'hours').format('HH:00')
     }
-
-    this.setState({
-      [name]: value
-    });
-
-    sessionStorage.setItem([name], value);
+    this.data[name] = value;
   }
 
-  onCorrect = e => {
-    const { correctTicket, hallId, isMineBooking } = this.props;
-    const { date, start, end } = this.state;
+  @action handleExpandClick = () => {
+    this.expanded = !this.expanded;
+  };
 
-    correctTicket({
+  onCorrect = e => {
+    const { ticketsStore: { putTicket }, hallId, isMineBooking } = this.props;
+    const { date, start, end } = this.data;
+
+    putTicket({
       hall_id: hallId,
       user_id: localStorage.getItem("userId"),
       from: new Date(`${date}T${start}`).getTime() + 1,
@@ -69,17 +67,14 @@ class FormCorrect extends Component {
   }
 
   onDelete = e => {
-    const { deleteTicket, isMineBooking } = this.props;
-    deleteTicket(isMineBooking._id);
+    const { ticketsStore: { deleteTickets }, isMineBooking } = this.props;
+    deleteTickets(isMineBooking._id);
   }
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
 
   render() {
     const { classes, isMineBooking, isBookedTime } = this.props;
-    const { title, start, end, date } = this.state;
+    const { title, start, end, date } = this.data;
     const isAuthenticated = !!localStorage.getItem("token");
 
     return (
@@ -109,7 +104,7 @@ class FormCorrect extends Component {
           <IconButton
             className={classes.expand}
             onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
+            aria-expanded={this.data.expanded}
             disabled={!(isAuthenticated && isMineBooking)}
             color='secondary'
             aria-label="Correct ticket"
@@ -126,7 +121,7 @@ class FormCorrect extends Component {
           </IconButton>
         </CardContent>
 
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={this.data.expanded} timeout="auto" unmountOnExit>
           <CardContent>
             <div className="flexbox col">
               <TextField
@@ -203,30 +198,15 @@ class FormCorrect extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    tickets: state.tickets.tickets
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    correctTicket: (user, ticketId) => dispatch(putTicket(user, ticketId)),
-    deleteTicket: (ticketId) => dispatch(deleteTickets(ticketId)),
-  };
-};
 
 FormCorrect.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   date: PropTypes.string,
   start: PropTypes.string,
-  tickets: PropTypes.array.isRequired,
-  correctTicket: PropTypes.func.isRequired,
-  deleteTicket: PropTypes.func.isRequired,
+  tickets: PropTypes.array,
+  correctTicket: PropTypes.func,
+  deleteTicket: PropTypes.func,
 }
 
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(FormCorrect));
+export default (withStyles(styles)(FormCorrect));

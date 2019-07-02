@@ -4,36 +4,38 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
-// import FormAuth from '../../components/FormAuth/FormAuth';
 import { signIn, authFail } from '../../redux/actions/auth';
 import Page from '../../layouts/Page/Page';
 import { Dialog, DialogTitle, Typography, Button } from '@material-ui/core';
-// import FormAuthRedux from '../../components/FormAuthRedux/FormAuthRedux';
 import FormSigninFormik from '../../components/FormSigninFormik/FormSigninFormik';
 
 import { observable, action } from 'mobx';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
+@inject('authStore')
 @observer
 class Login extends React.Component {
-  @observable open = false
+  @observable open = false;
+  @observable isAuthenticated = !!localStorage.getItem("token") || !!this.props.authStore.authData.token
 
-  @action handleOpen = () => this.open = true
+  @action handleOpen = () => {
+    this.open = true;
+  };
 
   @action handleClose = () => {
     this.open = false;
-    this.props.onClose();
+    this.props.authStore.authData.err = null;
   };
 
-  @action handleSubmit = (e) => {
-    localStorage.setItem("email", e.email);
-    this.props.onSubmit(e);
+  @action handleSubmit = (user) => {
+    localStorage.setItem("email", user.email);
+    this.props.authStore.signIn(user);
   }
 
   render() {
-    const { err, formData, isAuthenticated } = this.props;
+    const { authStore: { authData: { err } }, formData } = this.props;
 
-    if (isAuthenticated) {
+    if (!!this.props.authStore.authData.token) {
       return (
         <Redirect exact to='/' />
       )
@@ -65,29 +67,11 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    err: state.auth.err,
-    formData: state.form.formAuthRedux,
-    isAuthenticated: !!localStorage.getItem("token")
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSubmit: (user) => dispatch(signIn(user)),
-    onClose: () => dispatch(authFail(null))
-  };
-};
-
 Login.propTypes = {
   err: PropTypes.string,
-  onSubmit: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
+  onClose: PropTypes.func,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default (Login);
 

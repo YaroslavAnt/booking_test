@@ -1,11 +1,11 @@
 ﻿import React, { Component } from 'react';
 import moment from 'moment';
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import { TextField, withStyles, Button } from '@material-ui/core';
-import { postTicket } from '../../redux/actions/tickets';
 import Done from '@material-ui/icons/Done';
+import { inject, observer } from 'mobx-react';
+import { observable } from 'mobx';
 
 
 const styles = theme => ({
@@ -27,8 +27,10 @@ const styles = theme => ({
   }
 });
 
+@inject('authStore', 'ticketsStore')
+@observer
 class FormBooking extends Component {
-  state = {
+  @observable data = {
     date: `${this.props.date}`,
     start: `${this.props.hours}:00`,
     end: `${this.props.hours + 1}:00`,
@@ -38,26 +40,22 @@ class FormBooking extends Component {
 
   onChange = (e) => {
     const { name, value } = e.target;
-    const { date } = this.state;
+    const { date } = this.data;
 
     if (name === "start") {
-      this.setState({
-        end: moment(`${date}T${value}:00`).add(1, 'hours').format('HH:00')
-      })
+      this.data.end = moment(`${date}T${value}:00`).add(1, 'hours').format('HH:00')
     }
 
-    this.setState({
-      [name]: value
-    });
+    this.data[name] = value;
   }
 
   onAdd = () => {
-    const { user_id, hall_id } = this.props;
-    const { date, start, end, title } = this.state;
+    const { hall_id } = this.props;
+    const { date, start, end, title } = this.data;
 
-    this.props.postTicket({
+    this.props.ticketsStore.postTicket({
       hall_id,
-      user_id,
+      user_id: localStorage.getItem("userId"),
       from: new Date(date + 'T' + start).getTime() + 1,
       to: new Date(date + 'T' + end).getTime() - 1,
       title
@@ -66,7 +64,7 @@ class FormBooking extends Component {
 
   render() {
     const { classes } = this.props;
-    const { date, title, start, end } = this.state;
+    const { date, title, start, end } = this.data;
     const isAuthenticated = !!localStorage.getItem("token");
 
     return (
@@ -147,32 +145,29 @@ class FormBooking extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    tickets: state.tickets.tickets,
-    user_id: state.auth.userId,
-    hall_id: state.halls.currentHallId
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     tickets: state.tickets.tickets,
+//     user_id: state.auth.userId,
+//     hall_id: state.halls.currentHallId
+//   };
+// };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    postTicket: (user) => dispatch(postTicket(user))
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     postTicket: (user) => dispatch(postTicket(user))
+//   };
+// };
 
 FormBooking.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
   date: PropTypes.string,
   start: PropTypes.string,
-  tickets: PropTypes.array.isRequired,
-  postTicket: PropTypes.func.isRequired,
+  tickets: PropTypes.array,
+  postTicket: PropTypes.func,
   user_id: PropTypes.string,
-  hall_id: PropTypes.string.isRequired
+  hall_id: PropTypes.string
 }
 
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(FormBooking));
+export default (withStyles(styles)(FormBooking));
